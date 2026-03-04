@@ -1,49 +1,82 @@
-import { Layout, Menu } from "antd";
-import { Content, Footer, Header } from "antd/es/layout/layout";
-import { Outlet, useNavigate } from "react-router";
+import { Button, Input, Layout, Menu } from "antd";
+import {
+  BookOutlined,
+  MoonFilled,
+  ReadFilled,
+  SunFilled,
+  UserOutlined,
+} from "@ant-design/icons";
+import { useNavigate, useLocation, Outlet } from "react-router";
+import { Header } from "antd/es/layout/layout";
+
+const { Sider, Content } = Layout;
+
+const menuItems = [
+  { key: "/livros", icon: <BookOutlined />, label: "Livros" },
+  { key: "/autores", icon: <UserOutlined />, label: "Autores" },
+];
 
 export default function AppLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-    <Layout style={{ minHeight: "100vh", minWidth: "100vw" }}>
-      <Header
-        style={{
-          minWidth: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span style={{ color: "white", fontSize: "10px" }}>
-          Contato Seguro - Biblioteca
-        </span>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider theme="light" style={{ padding: "16px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            color: "#000",
+            padding: "0 16px",
+            marginBottom: 24,
+            fontWeight: "bold",
+            fontSize: 18,
+          }}
+        >
+          <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
+          <span>Biblioteca</span>
+        </div>
         <Menu
           style={{
-            userSelect: "none",
+            border: "none",
           }}
-          mode="horizontal"
+          theme="light"
+          mode="vertical"
           selectedKeys={[location.pathname]}
+          items={menuItems}
           onClick={({ key }) => navigate(key)}
+        />
+      </Sider>
+
+      <Layout>
+        <Header
+          style={{
+            background: "#fff",
+            borderBottom: "1px solid #f0f0f0",
+            padding: "0 24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: 56,
+            position: "sticky",
+            top: 0,
+            zIndex: 99,
+          }}
         >
-          <Menu.Item key="/livros">Livros</Menu.Item>
-          <Menu.Item key="/autores">Autores</Menu.Item>
-        </Menu>
-        <button style={{ color: "white", fontSize: "10px" }}>
-          Trocar Tema
-        </button>
-      </Header>
-
-      <Content style={{ padding: "20px" }}>
-        <Layout>
+          <Input.Search
+            placeholder="Pesquisar livros ou autores"
+            style={{ width: "75%" }}
+          />
+          <Button type="default" style={{ marginLeft: 16 }}>
+            <SunFilled />
+            <MoonFilled />
+          </Button>
+        </Header>
+        <Content style={{ backgroundColor: "#F5F7F8" }}>
           <Outlet />
-        </Layout>
-      </Content>
-
-      <Footer>
-        <span style={{ color: "black", fontSize: "10px" }}>
-          Contato Seguro - Lucas Hackbart Döhnert
-        </span>
-      </Footer>
+        </Content>
+      </Layout>
     </Layout>
   );
 }
