@@ -66,14 +66,21 @@ export default function AuthorsPage() {
       ) : authors.length === 0 ? (
         <Text type="secondary">Nenhum autor encontrado.</Text>
       ) : (
-        <AuthorTable authors={authors} />
+        <AuthorTable authors={authors} onView={setSelectedAuthor} />
       )}
 
       <AuthorModal
         isOpen={isModalOpen}
-        author={selectedAuthor}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
+      />
+
+      <AuthorModal
+        readOnly={true}
+        author={selectedAuthor}
+        onClose={() => setSelectedAuthor(null)}
+        onSubmit={handleSubmit}
+        isOpen={!!selectedAuthor}
       />
     </section>
   );
