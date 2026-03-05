@@ -1,30 +1,49 @@
 import { Divider, Form, Input, InputNumber, Modal, Select } from "antd";
-import type { Book } from "../types/book";
+import type { Book, CreateBookDto } from "../types/book";
 import type { Author } from "../types/author";
+import { useEffect } from "react";
 
 interface Props {
   isModalOpen: boolean;
   book: Book | null;
   authors: Author[];
-  OnClose: () => void;
+  onClose: () => void;
+  onSubmit: (data: CreateBookDto) => void;
 }
 
 export default function BookModal({
   isModalOpen,
   book,
   authors,
-  OnClose,
+  onClose,
+  onSubmit,
 }: Props) {
+  const [form] = Form.useForm<CreateBookDto>();
+
+  const handleSave = async () => {
+    const values = await form.validateFields();
+    onSubmit(values);
+  };
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      form.resetFields();
+    }
+  }, [isModalOpen, form]);
+
   return (
     <>
       <Modal
-        centered
         title="Adicione um novo livro"
+        okText="Salvar"
+        cancelText="Cancelar"
         open={isModalOpen}
-        onCancel={OnClose}
+        onCancel={onClose}
+        onOk={handleSave}
+        centered
       >
         <Divider />
-        <Form>
+        <Form form={form}>
           <Form.Item
             label="Título"
             name="title"

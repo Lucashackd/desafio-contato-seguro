@@ -4,10 +4,10 @@ import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import BookTable from "../components/BookTable";
 import { useEffect, useState } from "react";
-import { deleteBook, getBooks } from "../services/bookService";
+import { addBook, deleteBook, getBooks } from "../services/bookService";
 import { getAuthors } from "../services/authorService";
 import type { Author } from "../types/author";
-import type { Book } from "../types/book";
+import type { Book, CreateBookDto } from "../types/book";
 import BookModal from "../components/BookModal";
 
 export default function BooksPage() {
@@ -31,6 +31,12 @@ export default function BooksPage() {
   useEffect(() => {
     load();
   }, []);
+
+  const handleSubmit = async (data: CreateBookDto) => {
+    await addBook(data);
+    await load();
+    setIsModalOpen(false);
+  };
 
   const handleDelete = async (id: string) => {
     await deleteBook(id);
@@ -86,6 +92,8 @@ export default function BooksPage() {
         isModalOpen={isModalOpen}
         book={selectedBook}
         authors={authors}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleSubmit}
       />
     </section>
   );
