@@ -1,26 +1,24 @@
 import { Divider, Form, Input, InputNumber, Modal, Select } from "antd";
-import type { Book, CreateBookDto } from "../types/book";
-import type { Author } from "../types/author";
 import { useEffect } from "react";
+import type { Author } from "../types/author";
+import type { CreateBookDto } from "../types/book";
 
 interface Props {
+  authors?: Author[] | null;
   isOpen: boolean;
-  book: Book | null;
-  authors: Author[];
   onClose: () => void;
   onSubmit: (data: CreateBookDto) => void;
 }
 
-export default function BookModal({
-  isOpen,
-  book,
+export default function BookCreateModal({
   authors,
+  isOpen,
   onClose,
   onSubmit,
 }: Props) {
   const [form] = Form.useForm<CreateBookDto>();
 
-  const handleSave = async () => {
+  const handleSubmit = async () => {
     const values = await form.validateFields();
     onSubmit(values);
   };
@@ -33,50 +31,50 @@ export default function BookModal({
 
   return (
     <Modal
-      title="Adicione um novo livro"
-      okText="Salvar"
       cancelText="Cancelar"
-      open={isOpen}
-      onCancel={onClose}
-      onOk={handleSave}
       centered
+      okText="Salvar"
+      onCancel={onClose}
+      onOk={handleSubmit}
+      open={isOpen}
+      title="Adicione um novo livro"
     >
       <Divider />
       <Form form={form}>
         <Form.Item
           label="Título"
-          name="title"
           layout="vertical"
+          name="title"
           rules={[{ required: true, message: "Informe o título" }]}
         >
           <Input
-            type={"text"}
-            required
             placeholder="Informe o título do livro"
+            required
+            type={"text"}
           />
         </Form.Item>
 
         <Form.Item
           label="Autor"
-          name="author_id"
           layout="vertical"
+          name="author_id"
           rules={[{ required: true, message: "Informe o autor" }]}
         >
           <Select
-            placeholder="Selecione o autor"
-            options={authors.map((author) => ({
+            options={authors?.map((author) => ({
               label: author.name,
               value: author.id,
             }))}
+            placeholder="Selecione o autor"
           ></Select>
         </Form.Item>
 
-        <Form.Item label="Páginas (Opcional)" name="pages" layout="vertical">
+        <Form.Item label="Páginas (Opcional)" layout="vertical" name="pages">
           <InputNumber
-            type="number"
             min={1}
-            style={{ minWidth: "100%" }}
             placeholder="Número de páginas"
+            style={{ minWidth: "100%" }}
+            type="number"
           />
         </Form.Item>
       </Form>
