@@ -19,6 +19,14 @@ export const deleteBook = async (id: string): Promise<void> => {
   await db.setItem("list", updatedBooks);
 };
 
+export const deleteBooksByAuthorId = async (
+  authorId: string,
+): Promise<void> => {
+  const books = await getBooks();
+  const updatedBooks = books.filter((book) => book.author_id !== authorId);
+  await db.setItem("list", updatedBooks);
+};
+
 export const getBooks = async (): Promise<Book[]> => {
   const books: Book[] = (await db.getItem<Book[]>("list")) ?? [];
   return books;
