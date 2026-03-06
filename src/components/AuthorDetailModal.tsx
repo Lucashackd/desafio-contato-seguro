@@ -24,7 +24,7 @@ export default function AuthorDetailModal({ author, isOpen, onClose }: Props) {
         style={{
           display: "flex",
           alignItems: "stretch",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           gap: 8,
         }}
       >
@@ -41,7 +41,7 @@ export default function AuthorDetailModal({ author, isOpen, onClose }: Props) {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            justifyContent: "center",
           }}
         >
           <Text style={{ fontSize: "1rem" }}>
