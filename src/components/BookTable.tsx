@@ -1,22 +1,13 @@
-import { Button, Popconfirm, Space, Table } from "antd";
-import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Button, Table } from "antd";
 import type { Book } from "../types/book";
 import type { Author } from "../types/author";
-import { key } from "localforage";
 
 interface Props {
   books: Book[];
   authors: Author[];
-  onView: (book: Book) => void;
-  onDelete: (id: string) => void;
 }
 
-export default async function BookTable({
-  books,
-  authors,
-  onView,
-  onDelete,
-}: Props) {
+export default function BookTable({ books, authors }: Props) {
   const columns = [
     {
       title: "Título",
@@ -25,8 +16,8 @@ export default async function BookTable({
     },
     {
       title: "Autor",
-      dataIndex: "author",
-      key: "author",
+      dataIndex: "author_id",
+      key: "author_id",
       render: (id: string) => {
         const author = authors.find((a) => a.id === id);
         return author ? author.name : "-";
@@ -41,28 +32,9 @@ export default async function BookTable({
     {
       title: "Ações",
       key: "actions",
-      render: (_, record) => (
-        <Space>
-          <Button icon={<EyeOutlined />} onClick={() => onView(record)} />
-          <Popconfirm
-            title="Excluir autor?"
-            onConfirm={() => onDelete(record.id)}
-          >
-            <Button danger icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </Space>
-      ),
+      render: () => <Button type="link">Editar</Button>,
     },
   ];
 
-  return (
-    <div>
-      <h1>Book Table</h1>
-      <Table
-        columns={columns}
-        dataSource={books}
-        rowKey={(book) => book.id}
-      ></Table>
-    </div>
-  );
+  return <Table columns={columns} dataSource={books} rowKey="id"></Table>;
 }

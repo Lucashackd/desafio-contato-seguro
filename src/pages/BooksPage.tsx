@@ -1,10 +1,10 @@
 import { Button, Skeleton } from "antd";
-import { BookFilled, PlusOutlined, UserAddOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
 import BookTable from "../components/BookTable";
 import { useEffect, useState } from "react";
-import { addBook, deleteBook, getBooks } from "../services/bookService";
+import { addBook, getBooks } from "../services/bookService";
 import { getAuthors } from "../services/authorService";
 import type { Author } from "../types/author";
 import type { Book, CreateBookDto } from "../types/book";
@@ -36,11 +36,6 @@ export default function BooksPage() {
     await addBook(data);
     await load();
     setIsModalOpen(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteBook(id);
-    await load();
   };
 
   return (
@@ -80,16 +75,11 @@ export default function BooksPage() {
           Nenhum livro encontrado. Adicione um novo livro para começar.
         </Text>
       ) : (
-        <BookTable
-          books={books}
-          authors={authors}
-          onView={setSelectedBook}
-          onDelete={handleDelete}
-        />
+        <BookTable books={books} authors={authors} />
       )}
 
       <BookModal
-        isModalOpen={isModalOpen}
+        isOpen={isModalOpen}
         book={selectedBook}
         authors={authors}
         onClose={() => setIsModalOpen(false)}
