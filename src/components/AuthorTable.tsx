@@ -1,5 +1,6 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
+import { useDevice } from "../hooks/useDevice";
 import type { Author } from "../types/author";
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export default function AuthorTable({ authors, onDelete, onView }: Props) {
+  const { isMobile } = useDevice();
+
   const Columns: TableColumnsType<Author> = [
     {
       title: "Nome",
@@ -19,20 +22,25 @@ export default function AuthorTable({ authors, onDelete, onView }: Props) {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      responsive: ["md"],
       render: (email: string) => email ?? "-",
     },
     {
       title: "Ações",
       key: "actions",
+      width: isMobile ? 110 : 140,
       render: (_: unknown, record: Author) => (
         <div style={{ display: "flex", gap: 8 }}>
-          <Tooltip title="Visualizar detalhes" color={"blue"}>
+          <Tooltip
+            title={isMobile ? null : "Visualizar detalhes"}
+            color={"blue"}
+          >
             <Button type="primary" onClick={() => onView(record)}>
               <EyeOutlined />
             </Button>
           </Tooltip>
 
-          <Tooltip title="Excluir autor" color={"red"}>
+          <Tooltip title={isMobile ? null : "Excluir autor"} color={"red"}>
             <Button type="dashed" danger onClick={() => onDelete(record)}>
               <DeleteOutlined />
             </Button>
@@ -42,5 +50,17 @@ export default function AuthorTable({ authors, onDelete, onView }: Props) {
     },
   ];
 
-  return <Table<Author> columns={Columns} dataSource={authors} rowKey="id" />;
+  return (
+    <Table<Author>
+      columns={Columns}
+      dataSource={authors}
+      rowKey="id"
+      scroll={{ x: 420 }}
+      size={isMobile ? "small" : "middle"}
+      pagination={{
+        pageSize: isMobile ? 5 : 10,
+        responsive: true,
+      }}
+    />
+  );
 }

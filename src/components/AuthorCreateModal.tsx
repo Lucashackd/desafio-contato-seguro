@@ -1,6 +1,6 @@
 import { Divider, Form, Input, Modal } from "antd";
-import type { CreateAuthorDto } from "../types/author";
 import { useEffect } from "react";
+import type { CreateAuthorDto } from "../types/author";
 
 interface Props {
   isOpen: boolean;
@@ -28,13 +28,13 @@ export default function AuthorCreateModal({
 
   return (
     <Modal
-    cancelText="Cancelar"
-    centered
-    okText="Salvar"
-    onCancel={onClose}
-    onOk={handleSubmit}
-    open={isOpen}
-    title="Adicione um novo autor"
+      cancelText="Cancelar"
+      centered
+      okText="Salvar"
+      onCancel={onClose}
+      onOk={handleSubmit}
+      open={isOpen}
+      title="Adicione um novo autor"
     >
       <Divider />
       <Form form={form}>

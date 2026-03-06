@@ -7,6 +7,7 @@ import AuthorCreateModal from "../components/AuthorCreateModal";
 import AuthorDeleteModal from "../components/AuthorDeleteModal";
 import AuthorDetailModal from "../components/AuthorDetailModal";
 import AuthorTable from "../components/AuthorTable";
+import { useDevice } from "../hooks/useDevice";
 import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
 import type { Author, CreateAuthorDto } from "../types/author";
 
@@ -18,6 +19,8 @@ export default function AuthorsPage() {
     null,
   );
   const [selectedForView, setSelectedForView] = useState<Author | null>(null);
+
+  const { isMobile } = useDevice();
 
   const load = async () => {
     setIsLoading(true);
@@ -49,11 +52,13 @@ export default function AuthorsPage() {
   }, []);
 
   return (
-    <section style={{ padding: 24 }}>
+    <section style={{ padding: isMobile ? 12 : 24 }}>
       <div
         style={{
-          alignItems: "center",
+          alignItems: isMobile ? "stretch" : "center",
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 12 : 0,
           justifyContent: "space-between",
           marginBottom: 24,
         }}
@@ -62,12 +67,14 @@ export default function AuthorsPage() {
           <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
             Autores
           </Title>
-          <Text type="secondary">
+          <Text style={{ display: "block", maxWidth: 700 }} type="secondary">
             Gerencie o registro de todos os autores disponíveis na biblioteca,
             com suas respectivas informações.
           </Text>
         </div>
+
         <Button
+          block={isMobile}
           icon={<PlusOutlined />}
           onClick={() => setIsModalOpen(true)}
           size="large"
