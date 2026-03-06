@@ -7,6 +7,7 @@ import BookCreateModal from "../components/BookCreateModal";
 import BookDeleteModal from "../components/BookDeleteModal";
 import BookDetailModal from "../components/BookDetailModal";
 import BookTable from "../components/BookTable";
+import { useDevice } from "../hooks/useDevice";
 import { getAuthors } from "../services/authorService";
 import { addBook, deleteBook, getBooks } from "../services/bookService";
 import type { Author } from "../types/author";
@@ -19,6 +20,8 @@ export default function BooksPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedForDelete, setSelectedForDelete] = useState<Book | null>(null);
   const [selectedForView, setSelectedForView] = useState<Book | null>(null);
+
+  const { isMobile } = useDevice();
 
   const load = async () => {
     setIsLoading(true);
@@ -58,11 +61,13 @@ export default function BooksPage() {
   };
 
   return (
-    <section style={{ padding: 24 }}>
+    <section style={{ padding: isMobile ? 12 : 24 }}>
       <div
         style={{
-          alignItems: "center",
+          alignItems: isMobile ? "stretch" : "center",
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 12 : 0,
           justifyContent: "space-between",
           marginBottom: 24,
         }}
@@ -71,12 +76,13 @@ export default function BooksPage() {
           <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
             Livros
           </Title>
-          <Text type="secondary">
+          <Text style={{ display: "block", maxWidth: 700 }} type="secondary">
             Gerencie o registro de todos os livros disponíveis na biblioteca,
             com suas respectivas informações.
           </Text>
         </div>
         <Button
+          block={isMobile}
           icon={<PlusOutlined />}
           onClick={() => setIsModalOpen(true)}
           size="large"
