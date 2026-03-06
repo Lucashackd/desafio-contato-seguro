@@ -1,6 +1,6 @@
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
 import type { Author } from "../types/author";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 
 interface Props {
   authors: Author[];

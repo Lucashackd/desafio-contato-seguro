@@ -1,10 +1,10 @@
 import { Form, Modal } from "antd";
 import Text from "antd/es/typography/Text";
-import type { Author } from "../types/author";
 import { useEffect } from "react";
+import type { Author } from "../types/author";
 
 interface Props {
-  author?: Author | null;
+  author: Author;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (id: string) => void;
@@ -19,7 +19,6 @@ export default function AuthorDeleteModal({
   const [form] = Form.useForm();
 
   const handleSubmit = async () => {
-    if (!author) return;
     onSubmit(author.id);
   };
 
@@ -42,7 +41,7 @@ export default function AuthorDeleteModal({
     >
       <Form form={form}>
         <Text>
-          Tem certeza que deseja excluir <strong>{author?.name}</strong>? Esta
+          Tem certeza que deseja excluir <strong>{author.name}</strong>? Esta
           ação não pode ser desfeita.
         </Text>
       </Form>

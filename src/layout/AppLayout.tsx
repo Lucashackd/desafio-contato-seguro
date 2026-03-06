@@ -1,13 +1,6 @@
-import { Button, Input, Layout, Menu } from "antd";
-import {
-  BookOutlined,
-  MoonFilled,
-  ReadFilled,
-  SunFilled,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Layout, Menu } from "antd";
+import { BookOutlined, ReadFilled, UserOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation, Outlet } from "react-router";
-import { Header } from "antd/es/layout/layout";
 
 const { Sider, Content } = Layout;
 
@@ -40,6 +33,7 @@ export default function AppLayout() {
         <Menu
           style={{
             border: "none",
+            userSelect: "none",
           }}
           theme="light"
           mode="vertical"
@@ -50,29 +44,6 @@ export default function AppLayout() {
       </Sider>
 
       <Layout>
-        <Header
-          style={{
-            background: "#fff",
-            borderBottom: "1px solid #f0f0f0",
-            padding: "0 24px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: 56,
-            position: "sticky",
-            top: 0,
-            zIndex: 99,
-          }}
-        >
-          <Input.Search
-            placeholder="Pesquisar livros ou autores"
-            style={{ width: "75%" }}
-          />
-          <Button type="default" style={{ marginLeft: 16 }}>
-            <SunFilled />
-            <MoonFilled />
-          </Button>
-        </Header>
         <Content style={{ backgroundColor: "#F5F7F8" }}>
           <Outlet />
         </Content>

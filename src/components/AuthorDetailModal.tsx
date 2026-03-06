@@ -1,10 +1,10 @@
+import { UserOutlined } from "@ant-design/icons";
 import { Divider, Modal } from "antd";
 import Text from "antd/es/typography/Text";
 import type { Author } from "../types/author";
-import { UserOutlined } from "@ant-design/icons";
 
 interface Props {
-  author?: Author | null;
+  author: Author;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -16,26 +16,26 @@ export default function AuthorDetailModal({ author, isOpen, onClose }: Props) {
       footer={null}
       onCancel={onClose}
       open={isOpen}
-      style={{ minWidth: "fit-content", maxWidth: "90vw" }}
+      style={{ maxWidth: "90vw", minWidth: "fit-content" }}
       title="Detalhes do autor"
     >
       <Divider />
       <div
         style={{
-          display: "flex",
           alignItems: "stretch",
-          justifyContent: "flex-start",
+          display: "flex",
           gap: 8,
+          justifyContent: "flex-start",
         }}
       >
         <div
           style={{
-            display: "flex",
             alignItems: "center",
+            display: "flex",
             justifyContent: "center",
           }}
         >
-          <UserOutlined style={{ fontSize: "3rem", color: "#1677ff" }} />
+          <UserOutlined style={{ color: "#1677ff", fontSize: "3rem" }} />
         </div>
         <span
           style={{
@@ -45,11 +45,11 @@ export default function AuthorDetailModal({ author, isOpen, onClose }: Props) {
           }}
         >
           <Text style={{ fontSize: "1rem" }}>
-            <strong>Nome:</strong> {author?.name}
+            <strong>Nome:</strong> {author.name}
           </Text>
-          {author?.email && (
+          {author.email && (
             <Text style={{ fontSize: "1rem" }}>
-              <strong>Email:</strong> {author?.email}
+              <strong>Email:</strong> {author.email}
             </Text>
           )}
         </span>

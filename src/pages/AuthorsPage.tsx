@@ -1,23 +1,23 @@
-import { Button, Skeleton } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import Title from "antd/es/typography/Title";
+import { Button, Skeleton } from "antd";
 import Text from "antd/es/typography/Text";
+import Title from "antd/es/typography/Title";
 import { useEffect, useState } from "react";
-import type { Author, CreateAuthorDto } from "../types/author";
-import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
-import AuthorTable from "../components/AuthorTable";
-import AuthorDetailModal from "../components/AuthorDetailModal";
 import AuthorCreateModal from "../components/AuthorCreateModal";
 import AuthorDeleteModal from "../components/AuthorDeleteModal";
+import AuthorDetailModal from "../components/AuthorDetailModal";
+import AuthorTable from "../components/AuthorTable";
+import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
+import type { Author, CreateAuthorDto } from "../types/author";
 
 export default function AuthorsPage() {
   const [authors, setAuthors] = useState<Author[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedForDelete, setSelectedForDelete] = useState<Author | null>(
     null,
   );
   const [selectedForView, setSelectedForView] = useState<Author | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
     setIsLoading(true);
@@ -52,14 +52,14 @@ export default function AuthorsPage() {
     <section style={{ padding: 24 }}>
       <div
         style={{
+          alignItems: "center",
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: 24,
         }}
       >
         <div>
-          <Title level={2} style={{ margin: 0, fontWeight: 800 }}>
+          <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
             Autores
           </Title>
           <Text type="secondary">
@@ -68,11 +68,11 @@ export default function AuthorsPage() {
           </Text>
         </div>
         <Button
-          type="primary"
           icon={<PlusOutlined />}
-          size="large"
           onClick={() => setIsModalOpen(true)}
-          style={{ borderRadius: 8, fontWeight: 600 }}
+          size="large"
+          style={{ fontWeight: 600, borderRadius: 8 }}
+          type="primary"
         >
           Adicionar Autor
         </Button>
@@ -85,8 +85,8 @@ export default function AuthorsPage() {
       ) : (
         <AuthorTable
           authors={authors}
-          onView={setSelectedForView}
           onDelete={setSelectedForDelete}
+          onView={setSelectedForView}
         />
       )}
 
@@ -95,17 +95,23 @@ export default function AuthorsPage() {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleCreate}
       />
-      <AuthorDetailModal
-        author={selectedForView}
-        isOpen={!!selectedForView}
-        onClose={() => setSelectedForView(null)}
-      />
-      <AuthorDeleteModal
-        author={selectedForDelete}
-        isOpen={!!selectedForDelete}
-        onClose={() => setSelectedForDelete(null)}
-        onSubmit={handleDelete}
-      />
+
+      {selectedForDelete && (
+        <AuthorDeleteModal
+          author={selectedForDelete}
+          isOpen={!!selectedForDelete}
+          onClose={() => setSelectedForDelete(null)}
+          onSubmit={handleDelete}
+        />
+      )}
+
+      {selectedForView && (
+        <AuthorDetailModal
+          author={selectedForView}
+          isOpen={!!selectedForView}
+          onClose={() => setSelectedForView(null)}
+        />
+      )}
     </section>
   );
 }
