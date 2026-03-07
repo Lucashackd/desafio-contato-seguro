@@ -117,7 +117,7 @@ export default function AppLayout() {
         </Drawer>
       )}
 
-      <Layout>
+      <Layout style={{ height: "100vh" }}>
         {isMobile && (
           <header>
             <Header
@@ -151,11 +151,9 @@ export default function AppLayout() {
           </header>
         )}
 
-        <main id="main-content">
-          <Content style={{ backgroundColor: "#F2F0EF" }}>
-            <Outlet />
-          </Content>
-        </main>
+        <Content style={{ backgroundColor: "#F2F0EF", minHeight: "100%" }}>
+          <Outlet />
+        </Content>
       </Layout>
     </Layout>
   );
