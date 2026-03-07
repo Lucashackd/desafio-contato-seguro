@@ -73,7 +73,10 @@ export default function BooksPage() {
         }}
       >
         <div>
-          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
+          <Title
+            level={1}
+            style={{ color: "#1B263B", fontWeight: 800, margin: 0 }}
+          >
             Livros
           </Title>
           <Text
@@ -103,7 +106,7 @@ export default function BooksPage() {
       {isLoading ? (
         <Skeleton active />
       ) : books.length === 0 ? (
-        <Text type="warning">
+        <Text style={{ color: "#d84a1b", fontWeight: "500" }} type="warning">
           Nenhum livro encontrado. Adicione um novo livro para começar.
         </Text>
       ) : (

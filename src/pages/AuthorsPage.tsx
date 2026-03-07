@@ -64,7 +64,10 @@ export default function AuthorsPage() {
         }}
       >
         <div>
-          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
+          <Title
+            level={1}
+            style={{ color: "#1B263B", fontWeight: 800, margin: 0 }}
+          >
             Autores
           </Title>
           <Text
@@ -95,7 +98,9 @@ export default function AuthorsPage() {
       {isLoading ? (
         <Skeleton active />
       ) : authors.length === 0 ? (
-        <Text type="secondary">Nenhum autor encontrado.</Text>
+        <Text style={{ color: "#d84a1b", fontWeight: "500" }} type="warning">
+          Nenhum autor encontrado. Adicione um novo autor para começar.
+        </Text>
       ) : (
         <AuthorTable
           authors={authors}
