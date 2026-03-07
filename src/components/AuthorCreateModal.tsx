@@ -1,17 +1,17 @@
 import { Divider, Form, Input, Modal } from "antd";
 import type { CreateAuthorDto } from "../types/author";
 
-interface Props {
+type AuthorCreateProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: CreateAuthorDto) => void;
-}
+};
 
 export default function AuthorCreateModal({
   isOpen,
   onClose,
   onSubmit,
-}: Props) {
+}: AuthorCreateProps) {
   const [form] = Form.useForm();
 
   const handleSubmit = async () => {

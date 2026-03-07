@@ -1,59 +1,38 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Divider, Modal } from "antd";
 import Text from "antd/es/typography/Text";
 import type { Author } from "../types/author";
+import DetailModal from "./DetailModal";
 
-interface Props {
+type AuthorDetailProps = {
   author: Author;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
-export default function AuthorDetailModal({ author, isOpen, onClose }: Props) {
+export default function AuthorDetailModal({
+  author,
+  isOpen,
+  onClose,
+}: AuthorDetailProps) {
   return (
-    <Modal
-      centered
-      footer={null}
-      onCancel={onClose}
-      open={isOpen}
-      style={{ maxWidth: "90vw", minWidth: "fit-content" }}
+    <DetailModal
+      icon={<UserOutlined />}
+      isOpen={isOpen}
+      onClose={onClose}
       title="Detalhes do autor"
-    >
-      <Divider />
-      <div
-        style={{
-          alignItems: "stretch",
-          display: "flex",
-          gap: 8,
-          justifyContent: "flex-start",
-        }}
-      >
-        <div
-          style={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <UserOutlined style={{ color: "#1677ff", fontSize: "3rem" }} />
-        </div>
-        <span
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ fontSize: "1rem" }}>
+      content={
+        <>
+          <Text className="detail-modal__text">
             <strong>Nome:</strong> {author.name}
           </Text>
+          
           {author.email && (
-            <Text style={{ fontSize: "1rem" }}>
+            <Text className="detail-modal__text">
               <strong>Email:</strong> {author.email}
             </Text>
           )}
-        </span>
-      </div>
-    </Modal>
+        </>
+      }
+    />
   );
 }

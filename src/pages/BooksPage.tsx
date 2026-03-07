@@ -1,12 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Skeleton } from "antd";
-import Title from "antd/es/typography/Title";
+import { Button, notification, Skeleton } from "antd";
 import Text from "antd/es/typography/Text";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import BookCreateModal from "../components/BookCreateModal";
-import BookDeleteModal from "../components/BookDeleteModal";
 import BookDetailModal from "../components/BookDetailModal";
 import BookTable from "../components/BookTable";
+import DeleteModal from "../components/DeleteModal";
+import PageHeader from "../components/PageHeader";
 import { useDevice } from "../hooks/useDevice";
 import { getAuthors } from "../services/authorService";
 import { addBook, deleteBook, getBooks } from "../services/bookService";
@@ -23,19 +23,8 @@ export default function BooksPage() {
 
   const { isMobile } = useDevice();
 
-  const load = async () => {
-    setIsLoading(true);
-    const [booksData, authorsData] = await Promise.all([
-      getBooks(),
-      getAuthors(),
-    ]);
-    setBooks(booksData);
-    setAuthors(authorsData);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    const loadInitialData = async () => {
+  const load = useCallback(async () => {
+    try {
       setIsLoading(true);
       const [booksData, authorsData] = await Promise.all([
         getBooks(),
@@ -43,10 +32,19 @@ export default function BooksPage() {
       ]);
       setBooks(booksData);
       setAuthors(authorsData);
+    } catch (error) {
+      notification.error({
+        message: "Ocorreu um problema ao carregar livros",
+        description: `Erro: ${error}`,
+      });
+    } finally {
       setIsLoading(false);
-    };
-    loadInitialData();
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handleCreate = async (data: CreateBookDto) => {
     await addBook(data);
@@ -62,48 +60,31 @@ export default function BooksPage() {
 
   return (
     <section style={{ padding: isMobile ? 12 : 24 }}>
-      <div
-        style={{
-          alignItems: isMobile ? "stretch" : "center",
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          gap: isMobile ? 12 : 0,
-          justifyContent: "space-between",
-          marginBottom: 24,
-        }}
-      >
-        <div>
-          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
-            Livros
-          </Title>
-          <Text
-            style={{ color: "#555", display: "block", maxWidth: 700 }}
-            type="secondary"
+      <PageHeader
+        description="Gerencie o registro de todos os livros disponíveis na biblioteca, com suas respectivas informações."
+        title="Livros"
+        action={
+          <Button
+            block={isMobile}
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+            size="large"
+            style={{
+              backgroundColor: "#1B263B",
+              fontWeight: 600,
+              borderRadius: 8,
+            }}
+            type="primary"
           >
-            Gerencie o registro de todos os livros disponíveis na biblioteca,
-            com suas respectivas informações.
-          </Text>
-        </div>
-        <Button
-          block={isMobile}
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-          size="large"
-          style={{
-            backgroundColor: "#1B263B",
-            fontWeight: 600,
-            borderRadius: 8,
-          }}
-          type="primary"
-        >
-          Adicionar Livro
-        </Button>
-      </div>
+            Adicionar Livro
+          </Button>
+        }
+      />
 
       {isLoading ? (
         <Skeleton active />
       ) : books.length === 0 ? (
-        <Text type="warning">
+        <Text style={{ color: "#d84a1b", fontWeight: "500" }} type="warning">
           Nenhum livro encontrado. Adicione um novo livro para começar.
         </Text>
       ) : (
@@ -123,11 +104,18 @@ export default function BooksPage() {
       />
 
       {selectedForDelete && (
-        <BookDeleteModal
-          book={selectedForDelete}
+        <DeleteModal<Book>
+          target={selectedForDelete}
           isOpen={!!selectedForDelete}
           onClose={() => setSelectedForDelete(null)}
-          onSubmit={handleDelete}
+          onSubmit={(book) => handleDelete(book.id)}
+          title="Excluir Livro"
+          description={(book) => (
+            <Text>
+              Tem certeza que deseja excluir <strong>{book.title}</strong>? Esta
+              ação não pode ser desfeita.
+            </Text>
+          )}
         />
       )}
 

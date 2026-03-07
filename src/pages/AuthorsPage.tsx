@@ -1,12 +1,12 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Skeleton } from "antd";
 import Text from "antd/es/typography/Text";
-import Title from "antd/es/typography/Title";
 import { useEffect, useState } from "react";
 import AuthorCreateModal from "../components/AuthorCreateModal";
-import AuthorDeleteModal from "../components/AuthorDeleteModal";
 import AuthorDetailModal from "../components/AuthorDetailModal";
 import AuthorTable from "../components/AuthorTable";
+import DeleteModal from "../components/DeleteModal";
+import PageHeader from "../components/PageHeader";
 import { useDevice } from "../hooks/useDevice";
 import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
 import type { Author, CreateAuthorDto } from "../types/author";
@@ -52,50 +52,35 @@ export default function AuthorsPage() {
   }, []);
 
   return (
-    <section style={{ padding: isMobile ? 12 : 24 }}>
-      <div
-        style={{
-          alignItems: isMobile ? "stretch" : "center",
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          gap: isMobile ? 12 : 0,
-          justifyContent: "space-between",
-          marginBottom: 24,
-        }}
-      >
-        <div>
-          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
-            Autores
-          </Title>
-          <Text
-            style={{ color: "#555", display: "block", maxWidth: 700 }}
-            type="secondary"
+    <section id="authors-page" style={{ padding: isMobile ? 12 : 24 }}>
+      <PageHeader
+        description="Gerencie o registro de todos os autores disponíveis na biblioteca, com suas respectivas informações."
+        title="Autores"
+        action={
+          <Button
+            block={isMobile}
+            className="page-header-add-button"
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+            size="large"
+            style={{
+              backgroundColor: "#1B263B",
+              fontWeight: 600,
+              borderRadius: 8,
+            }}
+            type="primary"
           >
-            Gerencie o registro de todos os autores disponíveis na biblioteca,
-            com suas respectivas informações.
-          </Text>
-        </div>
-
-        <Button
-          block={isMobile}
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-          size="large"
-          style={{
-            backgroundColor: "#1B263B",
-            fontWeight: 600,
-            borderRadius: 8,
-          }}
-          type="primary"
-        >
-          Adicionar Autor
-        </Button>
-      </div>
+            Adicionar Autor
+          </Button>
+        }
+      />
 
       {isLoading ? (
         <Skeleton active />
       ) : authors.length === 0 ? (
-        <Text type="secondary">Nenhum autor encontrado.</Text>
+        <Text style={{ color: "#d84a1b", fontWeight: "500" }} type="warning">
+          Nenhum autor encontrado. Adicione um novo autor para começar.
+        </Text>
       ) : (
         <AuthorTable
           authors={authors}
@@ -111,11 +96,18 @@ export default function AuthorsPage() {
       />
 
       {selectedForDelete && (
-        <AuthorDeleteModal
-          author={selectedForDelete}
+        <DeleteModal<Author>
+          target={selectedForDelete}
           isOpen={!!selectedForDelete}
           onClose={() => setSelectedForDelete(null)}
-          onSubmit={handleDelete}
+          onSubmit={(author) => handleDelete(author.id)}
+          title="Excluir Autor"
+          description={(author) => (
+            <Text>
+              Tem certeza que deseja excluir <strong>{author.name}</strong>?
+              Esta ação não pode ser desfeita.
+            </Text>
+          )}
         />
       )}
 
