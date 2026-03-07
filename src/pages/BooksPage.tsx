@@ -84,7 +84,7 @@ export default function BooksPage() {
       {isLoading ? (
         <Skeleton active />
       ) : books.length === 0 ? (
-        <Text style={{ color: "#d84a1b", fontWeight: "500" }} type="warning">
+        <Text style={{ color: "#AB3A15", fontWeight: "500" }} type="warning">
           Nenhum livro encontrado. Adicione um novo livro para começar.
         </Text>
       ) : (
