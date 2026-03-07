@@ -1,0 +1,26 @@
+.detail-modal {
+  max-width: 90vw;
+  min-width: fit-content;
+}
+
+.detail-modal .detail-modal__body {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.detail-modal .detail-modal__icon {
+  color: #1677ff;
+  font-size: 3rem;
+}
+
+.detail-modal .detail-modal__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detail-modal .detail-modal__content .detail-modal__text {
+  font-size: 1rem;
+}
