@@ -1,4 +1,9 @@
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
 import getAuthorName from "../helpers/getAuthorName";
 import type { Author } from "../types/author";
@@ -72,6 +77,45 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
       pagination={{
         pageSize: isMobile ? 5 : 10,
         responsive: true,
+        itemRender: (page, type, originalElement) => {
+          if (type === "page") {
+            return (
+              <button
+                aria-label={`Ir para página ${page}`}
+                style={{ background: "transparent", border: "none" }}
+                type="button"
+              >
+                {page}
+              </button>
+            );
+          }
+
+          if (type === "prev") {
+            return (
+              <button
+                aria-label="Página anterior"
+                style={{ background: "transparent", border: "none" }}
+                type="button"
+              >
+                <LeftOutlined />
+              </button>
+            );
+          }
+
+          if (type === "next") {
+            return (
+              <button
+                aria-label="Próxima página"
+                style={{ background: "transparent", border: "none" }}
+                type="button"
+              >
+                <RightOutlined />
+              </button>
+            );
+          }
+
+          return originalElement;
+        },
       }}
     ></Table>
   );
