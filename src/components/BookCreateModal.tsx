@@ -1,5 +1,4 @@
 import { Divider, Form, Input, InputNumber, Modal, Select } from "antd";
-import { useEffect } from "react";
 import type { Author } from "../types/author";
 import type { CreateBookDto } from "../types/book";
 
@@ -23,16 +22,14 @@ export default function BookCreateModal({
     onSubmit(values);
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      form.resetFields();
-    }
-  }, [isOpen, form]);
-
   return (
     <Modal
+      afterOpenChange={(open) => {
+        if (!open) form.resetFields();
+      }}
       cancelText="Cancelar"
       centered
+      forceRender
       okText="Salvar"
       onCancel={onClose}
       onOk={handleSubmit}

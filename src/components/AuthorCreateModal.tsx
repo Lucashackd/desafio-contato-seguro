@@ -1,5 +1,4 @@
 import { Divider, Form, Input, Modal } from "antd";
-import { useEffect } from "react";
 import type { CreateAuthorDto } from "../types/author";
 
 interface Props {
@@ -20,16 +19,14 @@ export default function AuthorCreateModal({
     onSubmit(values);
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      form.resetFields();
-    }
-  }, [isOpen, form]);
-
   return (
     <Modal
+      afterOpenChange={(open) => {
+        if (!open) form.resetFields();
+      }}
       cancelText="Cancelar"
       centered
+      forceRender
       okText="Salvar"
       onCancel={onClose}
       onOk={handleSubmit}
