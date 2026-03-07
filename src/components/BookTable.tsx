@@ -9,15 +9,21 @@ import getAuthorName from "../helpers/getAuthorName";
 import type { Author } from "../types/author";
 import type { Book } from "../types/book";
 import { useDevice } from "../hooks/useDevice";
+import "./BookTable.css";
 
-interface Props {
+type BookTableProps = {
   authors: Author[];
   books: Book[];
   onDelete: (book: Book) => void;
   onView: (book: Book) => void;
-}
+};
 
-export default function BookTable({ authors, books, onDelete, onView }: Props) {
+export default function BookTable({
+  authors,
+  books,
+  onDelete,
+  onView,
+}: BookTableProps) {
   const { isMobile } = useDevice();
   const columns: TableColumnsType<Book> = [
     {
@@ -47,7 +53,7 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
       key: "actions",
       width: isMobile ? 110 : 140,
       render: (_: unknown, record: Book) => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="actions">
           <Tooltip
             color={"blue"}
             title={isMobile ? null : "Visualizar detalhes"}
@@ -69,22 +75,20 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
 
   return (
     <Table<Book>
+      className="book-table"
       columns={columns}
       dataSource={books}
       rowKey="id"
       scroll={{ x: 420 }}
       size={isMobile ? "small" : "middle"}
       pagination={{
+        className: "pagination",
         pageSize: isMobile ? 5 : 10,
         responsive: true,
         itemRender: (page, type, originalElement) => {
           if (type === "page") {
             return (
-              <button
-                aria-label={`Ir para página ${page}`}
-                style={{ background: "transparent", border: "none" }}
-                type="button"
-              >
+              <button aria-label={`Ir para página ${page}`} type="button">
                 {page}
               </button>
             );
@@ -92,11 +96,7 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
 
           if (type === "prev") {
             return (
-              <button
-                aria-label="Página anterior"
-                style={{ background: "transparent", border: "none" }}
-                type="button"
-              >
+              <button aria-label="Página anterior" type="button">
                 <LeftOutlined />
               </button>
             );
@@ -104,11 +104,7 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
 
           if (type === "next") {
             return (
-              <button
-                aria-label="Próxima página"
-                style={{ background: "transparent", border: "none" }}
-                type="button"
-              >
+              <button aria-label="Próxima página" type="button">
                 <RightOutlined />
               </button>
             );

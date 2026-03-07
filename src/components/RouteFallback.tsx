@@ -1,16 +1,9 @@
 import { Spin } from "antd";
+import "./RouteFallback.css";
 
 export default function RouteFallback() {
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="loader">
       <Spin size="large" />
     </div>
   );

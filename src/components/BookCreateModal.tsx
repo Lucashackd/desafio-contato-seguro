@@ -2,19 +2,19 @@ import { Divider, Form, Input, InputNumber, Modal, Select } from "antd";
 import type { Author } from "../types/author";
 import type { CreateBookDto } from "../types/book";
 
-interface Props {
+type BookCreateProps = {
   authors?: Author[] | null;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: CreateBookDto) => void;
-}
+};
 
 export default function BookCreateModal({
   authors,
   isOpen,
   onClose,
   onSubmit,
-}: Props) {
+}: BookCreateProps) {
   const [form] = Form.useForm<CreateBookDto>();
 
   const handleSubmit = async () => {
