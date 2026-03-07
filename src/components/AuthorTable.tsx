@@ -1,64 +1,47 @@
-import {
-  DeleteOutlined,
-  EyeOutlined,
-  LeftOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
-import getAuthorName from "../helpers/getAuthorName";
-import type { Author } from "../types/author";
-import type { Book } from "../types/book";
 import { useDevice } from "../hooks/useDevice";
+import type { Author } from "../types/author";
 
 interface Props {
   authors: Author[];
-  books: Book[];
-  onDelete: (book: Book) => void;
-  onView: (book: Book) => void;
+  onDelete: (author: Author) => void;
+  onView: (author: Author) => void;
 }
 
-export default function BookTable({ authors, books, onDelete, onView }: Props) {
+export default function AuthorTable({ authors, onDelete, onView }: Props) {
   const { isMobile } = useDevice();
-  const columns: TableColumnsType<Book> = [
+
+  const Columns: TableColumnsType<Author> = [
     {
-      title: "Título",
-      dataIndex: "title",
-      key: "title",
+      title: "Nome",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: "Autor",
-      dataIndex: "author_id",
-      key: "author_id",
-      responsive: ["sm"],
-      render: (id: string) => {
-        return getAuthorName(authors, id);
-      },
-    },
-    {
-      title: "Páginas",
-      dataIndex: "pages",
-      key: "pages",
-      responsive: ["lg"],
-      width: 120,
-      render: (pages: number) => pages ?? "-",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      responsive: ["md"],
+      render: (email: string) => email ?? "-",
     },
     {
       title: "Ações",
       key: "actions",
       width: isMobile ? 110 : 140,
-      render: (_: unknown, record: Book) => (
+      render: (_: unknown, record: Author) => (
         <div style={{ display: "flex", gap: 8 }}>
           <Tooltip
-            color={"blue"}
             title={isMobile ? null : "Visualizar detalhes"}
+            color={"blue"}
           >
-            <Button onClick={() => onView(record)} type="primary">
+            <Button type="primary" onClick={() => onView(record)}>
               <EyeOutlined />
             </Button>
           </Tooltip>
 
-          <Tooltip color={"red"} title={isMobile ? null : "Excluir livro"}>
-            <Button danger onClick={() => onDelete(record)} type="dashed">
+          <Tooltip title={isMobile ? null : "Excluir autor"} color={"red"}>
+            <Button type="dashed" danger onClick={() => onDelete(record)}>
               <DeleteOutlined />
             </Button>
           </Tooltip>
@@ -68,9 +51,9 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
   ];
 
   return (
-    <Table<Book>
-      columns={columns}
-      dataSource={books}
+    <Table<Author>
+      columns={Columns}
+      dataSource={authors}
       rowKey="id"
       scroll={{ x: 420 }}
       size={isMobile ? "small" : "middle"}
@@ -117,6 +100,6 @@ export default function BookTable({ authors, books, onDelete, onView }: Props) {
           return originalElement;
         },
       }}
-    ></Table>
+    />
   );
 }

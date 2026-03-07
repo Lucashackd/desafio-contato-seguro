@@ -1,21 +1,27 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Skeleton } from "antd";
-import { BookFilled, PlusOutlined, UserAddOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
 import Text from "antd/es/typography/Text";
-import BookTable from "../components/BookTable";
 import { useEffect, useState } from "react";
-import { addBook, deleteBook, getBooks } from "../services/bookService";
+import BookCreateModal from "../components/BookCreateModal";
+import BookDeleteModal from "../components/BookDeleteModal";
+import BookDetailModal from "../components/BookDetailModal";
+import BookTable from "../components/BookTable";
+import { useDevice } from "../hooks/useDevice";
 import { getAuthors } from "../services/authorService";
+import { addBook, deleteBook, getBooks } from "../services/bookService";
 import type { Author } from "../types/author";
 import type { Book, CreateBookDto } from "../types/book";
-import BookModal from "../components/BookModal";
 
 export default function BooksPage() {
-  const [books, setBooks] = useState<Book[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedForDelete, setSelectedForDelete] = useState<Book | null>(null);
+  const [selectedForView, setSelectedForView] = useState<Book | null>(null);
+
+  const { isMobile } = useDevice();
 
   const load = async () => {
     setIsLoading(true);
@@ -29,10 +35,20 @@ export default function BooksPage() {
   };
 
   useEffect(() => {
-    load();
+    const loadInitialData = async () => {
+      setIsLoading(true);
+      const [booksData, authorsData] = await Promise.all([
+        getBooks(),
+        getAuthors(),
+      ]);
+      setBooks(booksData);
+      setAuthors(authorsData);
+      setIsLoading(false);
+    };
+    loadInitialData();
   }, []);
 
-  const handleSubmit = async (data: CreateBookDto) => {
+  const handleCreate = async (data: CreateBookDto) => {
     await addBook(data);
     await load();
     setIsModalOpen(false);
@@ -41,33 +57,44 @@ export default function BooksPage() {
   const handleDelete = async (id: string) => {
     await deleteBook(id);
     await load();
+    setSelectedForDelete(null);
   };
 
   return (
-    <section style={{ padding: 24 }}>
+    <section style={{ padding: isMobile ? 12 : 24 }}>
       <div
         style={{
+          alignItems: isMobile ? "stretch" : "center",
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 12 : 0,
           justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: 24,
         }}
       >
         <div>
-          <Title level={2} style={{ margin: 0, fontWeight: 800 }}>
+          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
             Livros
           </Title>
-          <Text type="secondary">
+          <Text
+            style={{ color: "#555", display: "block", maxWidth: 700 }}
+            type="secondary"
+          >
             Gerencie o registro de todos os livros disponíveis na biblioteca,
             com suas respectivas informações.
           </Text>
         </div>
         <Button
-          type="primary"
+          block={isMobile}
           icon={<PlusOutlined />}
-          size="large"
           onClick={() => setIsModalOpen(true)}
-          style={{ borderRadius: 8, fontWeight: 600 }}
+          size="large"
+          style={{
+            backgroundColor: "#1B263B",
+            fontWeight: 600,
+            borderRadius: 8,
+          }}
+          type="primary"
         >
           Adicionar Livro
         </Button>
@@ -81,20 +108,37 @@ export default function BooksPage() {
         </Text>
       ) : (
         <BookTable
-          books={books}
           authors={authors}
-          onView={setSelectedBook}
-          onDelete={handleDelete}
+          books={books}
+          onDelete={setSelectedForDelete}
+          onView={setSelectedForView}
         />
       )}
 
-      <BookModal
-        isModalOpen={isModalOpen}
-        book={selectedBook}
+      <BookCreateModal
         authors={authors}
+        isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSubmit}
+        onSubmit={handleCreate}
       />
+
+      {selectedForDelete && (
+        <BookDeleteModal
+          book={selectedForDelete}
+          isOpen={!!selectedForDelete}
+          onClose={() => setSelectedForDelete(null)}
+          onSubmit={handleDelete}
+        />
+      )}
+
+      {selectedForView && (
+        <BookDetailModal
+          authors={authors}
+          book={selectedForView}
+          isOpen={!!selectedForView}
+          onClose={() => setSelectedForView(null)}
+        />
+      )}
     </section>
   );
 }

@@ -1,40 +1,131 @@
-import { Button } from "antd";
-import { UserAddOutlined } from "@ant-design/icons";
-import Title from "antd/es/typography/Title";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Skeleton } from "antd";
 import Text from "antd/es/typography/Text";
+import Title from "antd/es/typography/Title";
+import { useEffect, useState } from "react";
+import AuthorCreateModal from "../components/AuthorCreateModal";
+import AuthorDeleteModal from "../components/AuthorDeleteModal";
+import AuthorDetailModal from "../components/AuthorDetailModal";
+import AuthorTable from "../components/AuthorTable";
+import { useDevice } from "../hooks/useDevice";
+import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
+import type { Author, CreateAuthorDto } from "../types/author";
 
 export default function AuthorsPage() {
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedForDelete, setSelectedForDelete] = useState<Author | null>(
+    null,
+  );
+  const [selectedForView, setSelectedForView] = useState<Author | null>(null);
+
+  const { isMobile } = useDevice();
+
+  const load = async () => {
+    setIsLoading(true);
+    const authorsData = await getAuthors();
+    setAuthors(authorsData);
+    setIsLoading(false);
+  };
+
+  const handleCreate = async (data: CreateAuthorDto) => {
+    await addAuthor(data);
+    await load();
+    setIsModalOpen(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteAuthor(id);
+    await load();
+    setSelectedForDelete(null);
+  };
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true);
+      const authorsData = await getAuthors();
+      setAuthors(authorsData);
+      setIsLoading(false);
+    };
+    loadInitialData();
+  }, []);
+
   return (
-    <section style={{ padding: 24 }}>
+    <section style={{ padding: isMobile ? 12 : 24 }}>
       <div
         style={{
+          alignItems: isMobile ? "stretch" : "center",
           display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? 12 : 0,
           justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: 24,
         }}
       >
         <div>
-          <Title level={2} style={{ margin: 0, fontWeight: 800 }}>
+          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
             Autores
           </Title>
-          <Text type="secondary">
+          <Text
+            style={{ color: "#555", display: "block", maxWidth: 700 }}
+            type="secondary"
+          >
             Gerencie o registro de todos os autores disponíveis na biblioteca,
             com suas respectivas informações.
           </Text>
         </div>
+
         <Button
-          type="primary"
-          icon={<UserAddOutlined />}
+          block={isMobile}
+          icon={<PlusOutlined />}
+          onClick={() => setIsModalOpen(true)}
           size="large"
-          onClick={() =>
-            alert("Funcionalidade de adicionar autor ainda não implementada")
-          }
-          style={{ borderRadius: 8, fontWeight: 600 }}
+          style={{
+            backgroundColor: "#1B263B",
+            fontWeight: 600,
+            borderRadius: 8,
+          }}
+          type="primary"
         >
           Adicionar Autor
         </Button>
       </div>
+
+      {isLoading ? (
+        <Skeleton active />
+      ) : authors.length === 0 ? (
+        <Text type="secondary">Nenhum autor encontrado.</Text>
+      ) : (
+        <AuthorTable
+          authors={authors}
+          onDelete={setSelectedForDelete}
+          onView={setSelectedForView}
+        />
+      )}
+
+      <AuthorCreateModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreate}
+      />
+
+      {selectedForDelete && (
+        <AuthorDeleteModal
+          author={selectedForDelete}
+          isOpen={!!selectedForDelete}
+          onClose={() => setSelectedForDelete(null)}
+          onSubmit={handleDelete}
+        />
+      )}
+
+      {selectedForView && (
+        <AuthorDetailModal
+          author={selectedForView}
+          isOpen={!!selectedForView}
+          onClose={() => setSelectedForView(null)}
+        />
+      )}
     </section>
   );
 }

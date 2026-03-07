@@ -1,81 +1,161 @@
-import { Button, Input, Layout, Menu } from "antd";
 import {
   BookOutlined,
-  MoonFilled,
+  MenuOutlined,
   ReadFilled,
-  SunFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useLocation, Outlet } from "react-router";
+import { Button, Drawer, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
+import { useState } from "react";
+import { useNavigate, useLocation, Outlet } from "react-router";
+import { useDevice } from "../hooks/useDevice";
+
+type SidebarContentProps = {
+  onMenuClick?: () => void;
+};
 
 const { Sider, Content } = Layout;
 
 const menuItems = [
-  { key: "/livros", icon: <BookOutlined />, label: "Livros" },
   { key: "/autores", icon: <UserOutlined />, label: "Autores" },
+  { key: "/livros", icon: <BookOutlined />, label: "Livros" },
 ];
 
-export default function AppLayout() {
-  const navigate = useNavigate();
+const SidebarContent = ({ onMenuClick }: SidebarContentProps) => {
+  const { isDesktop, isMobile } = useDevice();
   const location = useLocation();
-
+  const navigate = useNavigate();
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider theme="light" style={{ padding: "16px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            color: "#000",
-            padding: "0 16px",
-            marginBottom: 24,
-            fontWeight: "bold",
-            fontSize: 18,
-          }}
-        >
-          <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
-          <span>Biblioteca</span>
-        </div>
+    <>
+      <div
+        style={{
+          alignItems: "center",
+          display: "flex",
+          fontSize: 18,
+          fontWeight: "bold",
+          padding: "0 16px",
+        }}
+      >
+        {!isMobile && (
+          <div
+            style={{
+              color: "#1B263B",
+              display: "flex",
+              justifyContent: isDesktop ? "flex-start" : "center",
+              marginBottom: 24,
+              width: "100%",
+            }}
+          >
+            <ReadFilled style={{ marginRight: isDesktop ? 8 : 0 }} />
+            {isDesktop && <span>Biblioteca</span>}
+          </div>
+        )}
+      </div>
+
+      <nav aria-label="Menu principal">
         <Menu
+          className="sidebar-menu"
           style={{
             border: "none",
+            userSelect: "none",
           }}
           theme="light"
           mode="vertical"
           selectedKeys={[location.pathname]}
           items={menuItems}
-          onClick={({ key }) => navigate(key)}
+          onClick={({ key }) => {
+            navigate(key);
+            onMenuClick?.();
+          }}
         />
-      </Sider>
+      </nav>
+    </>
+  );
+};
+
+export default function AppLayout() {
+  const { isMobile, isTablet } = useDevice();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  return (
+    <Layout style={{ minHeight: "100vh" }}>
+      {!isMobile && (
+        <Sider
+          collapsed={isTablet}
+          collapsedWidth={64}
+          style={{ padding: "16px" }}
+          theme="light"
+          width={isTablet ? 64 : 240}
+        >
+          <SidebarContent />
+        </Sider>
+      )}
+
+      {isMobile && (
+        <Drawer
+          closeIcon={null}
+          onClose={() => setIsDrawerOpen(false)}
+          open={isDrawerOpen}
+          placement="left"
+          size={315}
+          title={
+            <div
+              style={{
+                alignItems: "center",
+                color: "#000",
+                display: "flex",
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+            >
+              <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
+              <span>Biblioteca</span>
+            </div>
+          }
+        >
+          <SidebarContent onMenuClick={() => setIsDrawerOpen(false)} />
+        </Drawer>
+      )}
 
       <Layout>
-        <Header
-          style={{
-            background: "#fff",
-            borderBottom: "1px solid #f0f0f0",
-            padding: "0 24px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: 56,
-            position: "sticky",
-            top: 0,
-            zIndex: 99,
-          }}
-        >
-          <Input.Search
-            placeholder="Pesquisar livros ou autores"
-            style={{ width: "75%" }}
-          />
-          <Button type="default" style={{ marginLeft: 16 }}>
-            <SunFilled />
-            <MoonFilled />
-          </Button>
-        </Header>
-        <Content style={{ backgroundColor: "#F5F7F8" }}>
-          <Outlet />
-        </Content>
+        {isMobile && (
+          <header>
+            <Header
+              style={{
+                alignItems: "center",
+                backgroundColor: "#fff",
+                display: "flex",
+                justifyContent: "space-between",
+                paddingRight: 24,
+                paddingLeft: 18,
+              }}
+            >
+              <Button
+                icon={<MenuOutlined style={{ fontSize: 18 }} />}
+                onClick={() => setIsDrawerOpen(true)}
+                type={"text"}
+              ></Button>
+              <div
+                style={{
+                  alignItems: "center",
+                  color: "#000",
+                  display: "flex",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
+                <span>Biblioteca</span>
+              </div>
+            </Header>
+          </header>
+        )}
+
+        <main id="main-content">
+          <Content style={{ backgroundColor: "#F2F0EF" }}>
+            <Outlet />
+          </Content>
+        </main>
       </Layout>
     </Layout>
   );
