@@ -67,7 +67,10 @@ export default function AuthorsPage() {
           <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
             Autores
           </Title>
-          <Text style={{ display: "block", maxWidth: 700 }} type="secondary">
+          <Text
+            style={{ color: "#555", display: "block", maxWidth: 700 }}
+            type="secondary"
+          >
             Gerencie o registro de todos os autores disponíveis na biblioteca,
             com suas respectivas informações.
           </Text>
@@ -78,7 +81,11 @@ export default function AuthorsPage() {
           icon={<PlusOutlined />}
           onClick={() => setIsModalOpen(true)}
           size="large"
-          style={{ fontWeight: 600, borderRadius: 8 }}
+          style={{
+            backgroundColor: "#1B263B",
+            fontWeight: 600,
+            borderRadius: 8,
+          }}
           type="primary"
         >
           Adicionar Autor

@@ -30,7 +30,6 @@ const SidebarContent = ({ onMenuClick }: SidebarContentProps) => {
       <div
         style={{
           alignItems: "center",
-          color: "#000",
           display: "flex",
           fontSize: 18,
           fontWeight: "bold",
@@ -40,21 +39,21 @@ const SidebarContent = ({ onMenuClick }: SidebarContentProps) => {
         {!isMobile && (
           <div
             style={{
+              color: "#1B263B",
               display: "flex",
               justifyContent: isDesktop ? "flex-start" : "center",
               marginBottom: 24,
               width: "100%",
             }}
           >
-            <ReadFilled
-              style={{ marginRight: isDesktop ? 8 : 0, color: "#1890FF" }}
-            />
+            <ReadFilled style={{ marginRight: isDesktop ? 8 : 0 }} />
             {isDesktop && <span>Biblioteca</span>}
           </div>
         )}
       </div>
 
       <Menu
+        className="sidebar-menu"
         style={{
           border: "none",
           userSelect: "none",
@@ -129,7 +128,7 @@ export default function AppLayout() {
             }}
           >
             <Button
-              icon={<MenuOutlined style={{ color: "fff", fontSize: 18 }} />}
+              icon={<MenuOutlined style={{ fontSize: 18 }} />}
               onClick={() => setIsDrawerOpen(true)}
               type={"text"}
             ></Button>
@@ -148,7 +147,7 @@ export default function AppLayout() {
           </Header>
         )}
 
-        <Content style={{ backgroundColor: "#F5F7F8" }}>
+        <Content style={{ backgroundColor: "#F2F0EF" }}>
           <Outlet />
         </Content>
       </Layout>
