@@ -73,7 +73,7 @@ export default function BooksPage() {
         }}
       >
         <div>
-          <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
+          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
             Livros
           </Title>
           <Text

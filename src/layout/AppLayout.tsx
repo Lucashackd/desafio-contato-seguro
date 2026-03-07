@@ -52,21 +52,23 @@ const SidebarContent = ({ onMenuClick }: SidebarContentProps) => {
         )}
       </div>
 
-      <Menu
-        className="sidebar-menu"
-        style={{
-          border: "none",
-          userSelect: "none",
-        }}
-        theme="light"
-        mode="vertical"
-        selectedKeys={[location.pathname]}
-        items={menuItems}
-        onClick={({ key }) => {
-          navigate(key);
-          onMenuClick?.();
-        }}
-      />
+      <nav aria-label="Menu principal">
+        <Menu
+          className="sidebar-menu"
+          style={{
+            border: "none",
+            userSelect: "none",
+          }}
+          theme="light"
+          mode="vertical"
+          selectedKeys={[location.pathname]}
+          items={menuItems}
+          onClick={({ key }) => {
+            navigate(key);
+            onMenuClick?.();
+          }}
+        />
+      </nav>
     </>
   );
 };
@@ -117,39 +119,43 @@ export default function AppLayout() {
 
       <Layout>
         {isMobile && (
-          <Header
-            style={{
-              alignItems: "center",
-              backgroundColor: "#fff",
-              display: "flex",
-              justifyContent: "space-between",
-              paddingRight: 24,
-              paddingLeft: 18,
-            }}
-          >
-            <Button
-              icon={<MenuOutlined style={{ fontSize: 18 }} />}
-              onClick={() => setIsDrawerOpen(true)}
-              type={"text"}
-            ></Button>
-            <div
+          <header>
+            <Header
               style={{
                 alignItems: "center",
-                color: "#000",
+                backgroundColor: "#fff",
                 display: "flex",
-                fontSize: 18,
-                fontWeight: "bold",
+                justifyContent: "space-between",
+                paddingRight: 24,
+                paddingLeft: 18,
               }}
             >
-              <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
-              <span>Biblioteca</span>
-            </div>
-          </Header>
+              <Button
+                icon={<MenuOutlined style={{ fontSize: 18 }} />}
+                onClick={() => setIsDrawerOpen(true)}
+                type={"text"}
+              ></Button>
+              <div
+                style={{
+                  alignItems: "center",
+                  color: "#000",
+                  display: "flex",
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                <ReadFilled style={{ marginRight: 8, color: "#1890FF" }} />
+                <span>Biblioteca</span>
+              </div>
+            </Header>
+          </header>
         )}
 
-        <Content style={{ backgroundColor: "#F2F0EF" }}>
-          <Outlet />
-        </Content>
+        <main id="main-content">
+          <Content style={{ backgroundColor: "#F2F0EF" }}>
+            <Outlet />
+          </Content>
+        </main>
       </Layout>
     </Layout>
   );

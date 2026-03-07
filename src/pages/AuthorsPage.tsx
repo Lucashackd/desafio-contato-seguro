@@ -64,7 +64,7 @@ export default function AuthorsPage() {
         }}
       >
         <div>
-          <Title level={2} style={{ fontWeight: 800, margin: 0 }}>
+          <Title level={1} style={{ fontWeight: 800, margin: 0 }}>
             Autores
           </Title>
           <Text
