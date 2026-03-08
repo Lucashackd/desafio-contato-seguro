@@ -1,9 +1,9 @@
-.actions {
+.book-table__actions {
   display: flex;
   gap: 8px;
 }
 
-.book-table .pagination button {
+.book-table__pagination button {
   background: transparent;
   border: none;
 }

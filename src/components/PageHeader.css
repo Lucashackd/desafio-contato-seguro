@@ -1,16 +1,21 @@
-.header-area {
+.page-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
 }
 
-.header-area .header-info .title {
+.page-header__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header__title {
   color: #1b263b;
   font-weight: 800;
   margin: 0;
 }
 
-.header-area .header-info .description {
+.page-header__description {
   display: block;
   max-width: 700px;
   color: #555;

@@ -3,7 +3,7 @@ import "./RouteFallback.css";
 
 export default function RouteFallback() {
   return (
-    <div className="loader">
+    <div className="route-fallback">
       <Spin size="large" />
     </div>
   );

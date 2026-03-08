@@ -3,27 +3,27 @@
   min-width: fit-content;
 }
 
-.detail-modal .detail-modal__body {
+.detail-modal__body {
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
   gap: 8px;
 }
 
-.detail-modal .detail-modal__icon {
+.detail-modal__icon {
   align-self: center;
   color: #1677ff;
   font-size: 3rem;
 }
 
-.detail-modal .detail-modal__content {
+.detail-modal__content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
 }
 
-.detail-modal .detail-modal__content .detail-modal__booklist {
+.detail-modal__booklist {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -31,7 +31,7 @@
   overflow-y: auto;
 }
 
-.detail-modal .detail-modal__content .detail-modal__booklist .book-list__books {
+.book-list__books {
   display: flex;
   gap: 8px;
   padding: 4px 8px;
@@ -39,35 +39,31 @@
   border-radius: 6px;
 }
 
-.detail-modal
-  .detail-modal__content
-  .detail-modal__booklist
-  .book-list__books
-  .book-list__icon {
+.book-list__icon {
   color: #1b263b;
   font-size: 1rem;
   flex-shrink: 0;
 }
 
-.detail-modal .detail-modal__content .detail-modal__info {
+.detail-modal__info {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.detail-modal .detail-modal__content .detail-modal__field {
+.detail-modal__field {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.detail-modal .detail-modal__content .detail-modal__field .detail-modal__icon {
+.detail-modal__icon {
   color: #1677ff;
   font-size: 1rem;
   flex-shrink: 0;
 }
 
-.detail-modal .detail-modal__content .detail-modal__text,
+.detail-modal__text,
 .book-list__text {
   font-size: 1rem;
   text-overflow: ellipsis;

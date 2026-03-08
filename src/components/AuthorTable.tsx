@@ -49,7 +49,7 @@ export default function AuthorTable({
       key: "actions",
       width: isMobile ? 110 : 140,
       render: (_: unknown, record: Author) => (
-        <div className="actions">
+        <div className="author-table__actions">
           <Tooltip
             title={isMobile ? null : "Visualizar detalhes"}
             color={"blue"}
@@ -78,7 +78,7 @@ export default function AuthorTable({
       scroll={{ x: 420 }}
       size={isMobile ? "small" : "middle"}
       pagination={{
-        className: "pagination",
+        className: "author-table__pagination",
         pageSize: isMobile ? 5 : 10,
         responsive: true,
         itemRender: (page, type, originalElement) => {
