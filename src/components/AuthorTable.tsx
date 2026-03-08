@@ -5,6 +5,7 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
+import { getFormattedDate } from "../helpers/getFormattedDate";
 import { useDevice } from "../hooks/useDevice";
 import type { Author } from "../types/author";
 import "./AuthorTable.css";
@@ -36,11 +37,19 @@ export default function AuthorTable({
       render: (email: string) => email ?? "-",
     },
     {
+      title: "Data da Adição",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      responsive: ["xl"],
+      width: 120,
+      render: (createdAt: string) => getFormattedDate(createdAt),
+    },
+    {
       title: "Ações",
       key: "actions",
       width: isMobile ? 110 : 140,
       render: (_: unknown, record: Author) => (
-        <div className="actions">
+        <div className="author-table__actions">
           <Tooltip
             title={isMobile ? null : "Visualizar detalhes"}
             color={"blue"}
@@ -69,7 +78,7 @@ export default function AuthorTable({
       scroll={{ x: 420 }}
       size={isMobile ? "small" : "middle"}
       pagination={{
-        className: "pagination",
+        className: "author-table__pagination",
         pageSize: isMobile ? 5 : 10,
         responsive: true,
         itemRender: (page, type, originalElement) => {

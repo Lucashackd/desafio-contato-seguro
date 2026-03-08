@@ -5,8 +5,8 @@ import { useCallback, useEffect, useState } from "react";
 import BookCreateModal from "../components/BookCreateModal";
 import BookDetailModal from "../components/BookDetailModal";
 import BookTable from "../components/BookTable";
-import DeleteModal from "../components/DeleteModal";
 import PageHeader from "../components/PageHeader";
+import confirmDelete from "../helpers/confirmDelete";
 import { useDevice } from "../hooks/useDevice";
 import { getAuthors } from "../services/authorService";
 import { addBook, deleteBook, getBooks } from "../services/bookService";
@@ -18,8 +18,7 @@ export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedForDelete, setSelectedForDelete] = useState<Book | null>(null);
-  const [selectedForView, setSelectedForView] = useState<Book | null>(null);
+  const [selected, setSelected] = useState<Book | null>(null);
 
   const { isMobile } = useDevice();
 
@@ -55,7 +54,6 @@ export default function BooksPage() {
   const handleDelete = async (id: string) => {
     await deleteBook(id);
     await load();
-    setSelectedForDelete(null);
   };
 
   return (
@@ -91,8 +89,20 @@ export default function BooksPage() {
         <BookTable
           authors={authors}
           books={books}
-          onDelete={setSelectedForDelete}
-          onView={setSelectedForView}
+          onView={setSelected}
+          onDelete={(book) =>
+            confirmDelete<Book>({
+              target: book,
+              onSubmit: (book) => handleDelete(book.id),
+              title: "Excluir Livro",
+              description: (book) => (
+                <Text>
+                  Tem certeza que deseja excluir <strong>{book.title}</strong>?
+                  Esta ação não pode ser desfeita.
+                </Text>
+              ),
+            })
+          }
         />
       )}
 
@@ -103,28 +113,12 @@ export default function BooksPage() {
         onSubmit={handleCreate}
       />
 
-      {selectedForDelete && (
-        <DeleteModal<Book>
-          target={selectedForDelete}
-          isOpen={!!selectedForDelete}
-          onClose={() => setSelectedForDelete(null)}
-          onSubmit={(book) => handleDelete(book.id)}
-          title="Excluir Livro"
-          description={(book) => (
-            <Text>
-              Tem certeza que deseja excluir <strong>{book.title}</strong>? Esta
-              ação não pode ser desfeita.
-            </Text>
-          )}
-        />
-      )}
-
-      {selectedForView && (
+      {selected && (
         <BookDetailModal
           authors={authors}
-          book={selectedForView}
-          isOpen={!!selectedForView}
-          onClose={() => setSelectedForView(null)}
+          book={selected}
+          isOpen={!!selected}
+          onClose={() => setSelected(null)}
         />
       )}
     </section>

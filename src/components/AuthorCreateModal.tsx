@@ -37,14 +37,19 @@ export default function AuthorCreateModal({
       <Form form={form}>
         <Form.Item
           label="Nome"
-          name="name"
           layout="vertical"
+          name="name"
           rules={[{ required: true, message: "Informe o nome" }]}
         >
           <Input type={"text"} required placeholder="Informe o nome do autor" />
         </Form.Item>
 
-        <Form.Item label="Email (opcional)" name="email" layout="vertical">
+        <Form.Item
+          label="Email (opcional)"
+          layout="vertical"
+          name="email"
+          rules={[{ type: "email", message: "Informe um email válido" }]}
+        >
           <Input
             type="email"
             placeholder="Informe o email do autor (opcional)"

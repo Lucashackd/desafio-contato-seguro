@@ -18,18 +18,18 @@ export default function PageHeader({
   const { isMobile } = useDevice();
   return (
     <div
-      className="header-area"
+      className="page-header"
       style={{
         alignItems: isMobile ? "stretch" : "center",
         flexDirection: isMobile ? "column" : "row",
         gap: isMobile ? 12 : 0,
       }}
     >
-      <div className="header-info">
-        <Title className="title" level={1}>
+      <div className="page-header__info">
+        <Title className="page-header__title" level={1}>
           {title}
         </Title>
-        <Text className="description" type="secondary">
+        <Text className="page-header__description" type="secondary">
           {description}
         </Text>
       </div>

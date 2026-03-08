@@ -1,9 +1,9 @@
-.actions {
+.author-table__actions {
   display: flex;
   gap: 8px;
 }
 
-.author-table .pagination button {
+.author-table__pagination button {
   background: transparent;
   border: none;
 }

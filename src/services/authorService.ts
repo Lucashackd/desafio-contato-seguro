@@ -9,7 +9,7 @@ const db = localforage.createInstance({
 
 export const addAuthor = async (data: CreateAuthorDto): Promise<Author> => {
   const authors = await getAuthors();
-  const newAuthor = { id: crypto.randomUUID(), ...data };
+  const newAuthor = { id: crypto.randomUUID(), createdAt: new Date(), ...data };
   await db.setItem("list", [...authors, newAuthor]);
   return newAuthor;
 };
@@ -23,5 +23,8 @@ export const deleteAuthor = async (id: string): Promise<void> => {
 
 export const getAuthors = async (): Promise<Author[]> => {
   const authors: Author[] = (await db.getItem<Author[]>("list")) ?? [];
-  return authors;
+  return authors.map((author) => ({
+    ...author,
+    createdAt: new Date(author.createdAt),
+  }));
 };
