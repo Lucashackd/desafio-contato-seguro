@@ -11,6 +11,7 @@
 }
 
 .detail-modal .detail-modal__icon {
+  align-self: center;
   color: #1677ff;
   font-size: 3rem;
 }

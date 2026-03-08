@@ -1,6 +1,7 @@
 import { BookOutlined } from "@ant-design/icons";
 import Text from "antd/es/typography/Text";
 import getAuthorName from "../helpers/getAuthorName";
+import { getFormattedDateTime } from "../helpers/getFormattedDate";
 import type { Author } from "../types/author";
 import type { Book } from "../types/book";
 import DetailModal from "./DetailModal";
@@ -39,6 +40,11 @@ export default function BookDetailModal({
               <strong>Páginas:</strong> {book?.pages}
             </Text>
           )}
+
+          <Text className="detail-modal__text">
+            <strong>Adcionado em:</strong>{" "}
+            {getFormattedDateTime(book.createdAt)}
+          </Text>
         </>
       }
     />

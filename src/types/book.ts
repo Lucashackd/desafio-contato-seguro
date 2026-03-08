@@ -3,6 +3,7 @@ export interface Book {
   title: string;
   author_id: string;
   pages?: number;
+  createdAt: Date;
 }
 
-export type CreateBookDto = Omit<Book, "id">;
+export type CreateBookDto = Omit<Book, "id" | "createdAt">;
