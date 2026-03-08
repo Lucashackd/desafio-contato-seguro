@@ -29,9 +29,7 @@ export default function PageHeader({
         <Title className="page-header__title" level={1}>
           {title}
         </Title>
-        <Text className="page-header__description" type="secondary">
-          {description}
-        </Text>
+        <Text className="page-header__description">{description}</Text>
       </div>
       {action}
     </div>
