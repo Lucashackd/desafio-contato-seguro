@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 
 type DetailModalProps = {
   content: ReactNode;
-  icon: ReactNode;
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -12,7 +11,6 @@ type DetailModalProps = {
 
 export default function DetailModal({
   content,
-  icon,
   isOpen,
   onClose,
   title,
@@ -29,7 +27,6 @@ export default function DetailModal({
       <Divider />
 
       <div className="detail-modal__body">
-        <div className="detail-modal__icon">{icon}</div>
         <div className="detail-modal__content">{content}</div>
       </div>
     </Modal>

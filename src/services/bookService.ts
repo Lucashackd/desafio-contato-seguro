@@ -38,3 +38,8 @@ export const getBooks = async (): Promise<Book[]> => {
     createdAt: new Date(book.createdAt),
   }));
 };
+
+export const getBooksByAuthorId = async (authorId: string): Promise<Book[]> => {
+  const books = await getBooks();
+  return books.filter((book) => book.author_id === authorId);
+};
