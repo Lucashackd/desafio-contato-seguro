@@ -88,7 +88,7 @@ export default function BookTable({
       columns={columns}
       dataSource={books}
       rowKey="id"
-      scroll={{ x: 420 }}
+      scroll={{ x: 320 }}
       size={isMobile ? "small" : "middle"}
       pagination={{
         className: "book-table__pagination",

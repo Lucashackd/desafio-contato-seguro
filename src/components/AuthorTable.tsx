@@ -75,7 +75,7 @@ export default function AuthorTable({
       columns={Columns}
       dataSource={authors}
       rowKey="id"
-      scroll={{ x: 420 }}
+      scroll={{ x: 320 }}
       size={isMobile ? "small" : "middle"}
       pagination={{
         className: "author-table__pagination",
