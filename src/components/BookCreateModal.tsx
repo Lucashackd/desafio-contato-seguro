@@ -66,10 +66,22 @@ export default function BookCreateModal({
           ></Select>
         </Form.Item>
 
-        <Form.Item label="Páginas (Opcional)" layout="vertical" name="pages">
+        <Form.Item
+          label="Páginas (Opcional)"
+          layout="vertical"
+          name="pages"
+          rules={[
+            { type: "integer", message: "Informe um número válido de páginas" },
+          ]}
+        >
           <InputNumber
             min={1}
-            placeholder="Número de páginas"
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-"].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            placeholder="Informe o número de páginas"
             style={{ minWidth: "100%" }}
             type="number"
           />

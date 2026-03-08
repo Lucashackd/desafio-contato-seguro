@@ -1,73 +1,141 @@
-# React + TypeScript + Vite
+# Biblioteca - Gestão de Livros e Autores
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Um sistema completo de gestão de biblioteca desenvolvido com **React 18**, **TypeScript** e **Ant Design**. Aplicação responsiva que permite criar, visualizar e excluir livros e autores com dados persistidos no **IndexedDB**.
 
-Currently, two official plugins are available:
+## 🎯 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📚 **CRUD de Livros**: Criar, visualizar e excluir livros
+- 👤 **CRUD de Autores**: Gerenciar autores com facilidade
+- 💾 **Persistência Local**: Dados armazenados no IndexedDB com `localForage`
+- 📱 **Design Responsivo**: Interface adaptável para desktop e mobile
+- ⚡ **Performance**: Construído com Vite para desenvolvimento rápido
+- 🎨 **UI/UX**: Componentes do Ant Design com tema customizado
 
-## React Compiler
+## 🛠️ Stack Tecnológico
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18.3** - Biblioteca JavaScript para UI
+- **TypeScript** - Type safety e melhor DX
+- **Vite** - Build tool moderno e rápido
+- **Ant Design 6** - Componentes UI de alta qualidade
+- **React Router 7** - Roteamento cliente-side
+- **Dayjs** - Manipulação de datas
+- **localForage** - Abstração para IndexedDB
+- **Docker** - Containerização
 
-## Expanding the ESLint configuration
+## 📦 Instalação
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Clonar repositório
+git clone https://github.com/Lucashackd/desafio-contato-seguro.git
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Instalar dependências
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Executar em desenvolvimento
+npm run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build para produção
+npm run build
+
+# Preview do build
+npm run preview
+
+# Lint do código
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🐳 Docker
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Execução mínima para desenvolvimento com hot reload (Vite).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Com Docker Compose (recomendado)
+
+```bash
+docker compose up --build
 ```
+
+A aplicação ficará disponível em: `http://localhost:5173`
+
+### Sem Docker Compose
+
+```bash
+docker build -t biblioteca-app .
+docker run --rm -p 5173:5173 biblioteca-app
+```
+
+A aplicação ficará disponível em: `http://localhost:5173`
+
+Se houver erro de execução no PowerShell com `npm.ps1`, rode os comandos via CMD.
+
+### Parar os containers
+
+```bash
+docker compose down
+```
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── components/       # Componentes reutilizáveis
+├── pages/           # Páginas (Authors, Books)
+├── layout/          # Layout estrutural
+├── services/        # API e lógica de negócios
+├── types/           # Tipos TypeScript
+├── helpers/         # Funções utilitárias
+├── hooks/           # Custom React hooks
+├── routes/          # Configuração de rotas
+└── App.tsx          # Componente raiz
+```
+
+## 🎮 Funcionalidades
+
+### Livros
+
+- Criar novo livro com autor
+- Listar todos os livros em tabela
+- Visualizar detalhes do livro
+- Excluir livro com confirmação
+
+### Autores
+
+- Criar novo autor
+- Listar todos os autores
+- Visualizar detalhes do autor
+- Excluir autor com confirmação
+
+## 📝 Modelos de Dados
+
+### Livro
+
+```typescript
+{
+  id: string;
+  name: string;
+  author_id: string;
+  pages?: number;
+}
+```
+
+### Autor
+
+```typescript
+{
+  id: string;
+  name: string;
+  email?: string;
+}
+```
+
+## 🚀 Diferenciais Implementados
+
+- ✅ TypeScript com tipos bem definidos
+- ✅ Arquitetura em camadas (services, helpers, types)
+- ✅ Componentes reutilizáveis
+- ✅ Docker configurado
+- ✅ Responsive design
+- ✅ Code splitting automático
+
+## 📄 Licença
+
+Projeto desafio Contato Seguro.
