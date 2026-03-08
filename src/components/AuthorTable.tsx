@@ -5,6 +5,7 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
+import { getFormattedDate } from "../helpers/getFormattedDate";
 import { useDevice } from "../hooks/useDevice";
 import type { Author } from "../types/author";
 import "./AuthorTable.css";
@@ -34,6 +35,14 @@ export default function AuthorTable({
       key: "email",
       responsive: ["md"],
       render: (email: string) => email ?? "-",
+    },
+    {
+      title: "Data da Adição",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      responsive: ["xl"],
+      width: 120,
+      render: (createdAt: string) => getFormattedDate(createdAt),
     },
     {
       title: "Ações",

@@ -1,7 +1,8 @@
 import { UserOutlined } from "@ant-design/icons";
 import Text from "antd/es/typography/Text";
-import type { Author } from "../types/author";
+import { getFormattedDateTime } from "../helpers/getFormattedDate";
 import DetailModal from "./DetailModal";
+import type { Author } from "../types/author";
 
 type AuthorDetailProps = {
   author: Author;
@@ -25,12 +26,17 @@ export default function AuthorDetailModal({
           <Text className="detail-modal__text">
             <strong>Nome:</strong> {author.name}
           </Text>
-          
+
           {author.email && (
             <Text className="detail-modal__text">
               <strong>Email:</strong> {author.email}
             </Text>
           )}
+
+          <Text className="detail-modal__text">
+            <strong>Adcionado em:</strong>{" "}
+            {getFormattedDateTime(author.createdAt)}
+          </Text>
         </>
       }
     />

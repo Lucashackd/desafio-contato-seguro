@@ -6,6 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Table, Tooltip, type TableColumnsType } from "antd";
 import getAuthorName from "../helpers/getAuthorName";
+import { getFormattedDate } from "../helpers/getFormattedDate";
 import type { Author } from "../types/author";
 import type { Book } from "../types/book";
 import { useDevice } from "../hooks/useDevice";
@@ -47,6 +48,14 @@ export default function BookTable({
       responsive: ["lg"],
       width: 120,
       render: (pages: number) => pages ?? "-",
+    },
+    {
+      title: "Data da Adição",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      responsive: ["xl"],
+      width: 120,
+      render: (createdAt: string) => getFormattedDate(createdAt),
     },
     {
       title: "Ações",

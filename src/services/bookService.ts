@@ -8,7 +8,11 @@ const db = localforage.createInstance({
 
 export const addBook = async (data: CreateBookDto): Promise<Book> => {
   const books = await getBooks();
-  const newBook = { id: crypto.randomUUID(), ...data };
+  const newBook = {
+    id: crypto.randomUUID(),
+    createdAt: new Date(),
+    ...data,
+  };
   await db.setItem("list", [...books, newBook]);
   return newBook;
 };
@@ -29,5 +33,8 @@ export const deleteBooksByAuthorId = async (
 
 export const getBooks = async (): Promise<Book[]> => {
   const books: Book[] = (await db.getItem<Book[]>("list")) ?? [];
-  return books;
+  return books.map((book) => ({
+    ...book,
+    createdAt: new Date(book.createdAt),
+  }));
 };
