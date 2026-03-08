@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import AuthorCreateModal from "../components/AuthorCreateModal";
 import AuthorDetailModal from "../components/AuthorDetailModal";
 import AuthorTable from "../components/AuthorTable";
-import DeleteModal from "../components/DeleteModal";
 import PageHeader from "../components/PageHeader";
+import confirmDelete from "../helpers/confirmDelete";
 import { useDevice } from "../hooks/useDevice";
 import { addAuthor, deleteAuthor, getAuthors } from "../services/authorService";
 import type { Author, CreateAuthorDto } from "../types/author";
@@ -15,11 +15,7 @@ export default function AuthorsPage() {
   const [authors, setAuthors] = useState<Author[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedForDelete, setSelectedForDelete] = useState<Author | null>(
-    null,
-  );
-  const [selectedForView, setSelectedForView] = useState<Author | null>(null);
-
+  const [selected, setSelected] = useState<Author | null>(null);
   const { isMobile } = useDevice();
 
   const load = async () => {
@@ -38,7 +34,6 @@ export default function AuthorsPage() {
   const handleDelete = async (id: string) => {
     await deleteAuthor(id);
     await load();
-    setSelectedForDelete(null);
   };
 
   useEffect(() => {
@@ -84,8 +79,20 @@ export default function AuthorsPage() {
       ) : (
         <AuthorTable
           authors={authors}
-          onDelete={setSelectedForDelete}
-          onView={setSelectedForView}
+          onView={setSelected}
+          onDelete={(author) =>
+            confirmDelete<Author>({
+              target: author,
+              title: "Excluir Autor",
+              description: (author) => (
+                <Text>
+                  Tem certeza que deseja excluir <strong>{author.name}</strong>?
+                  Esta ação não pode ser desfeita.
+                </Text>
+              ),
+              onSubmit: (author) => handleDelete(author.id),
+            })
+          }
         />
       )}
 
@@ -95,27 +102,11 @@ export default function AuthorsPage() {
         onSubmit={handleCreate}
       />
 
-      {selectedForDelete && (
-        <DeleteModal<Author>
-          target={selectedForDelete}
-          isOpen={!!selectedForDelete}
-          onClose={() => setSelectedForDelete(null)}
-          onSubmit={(author) => handleDelete(author.id)}
-          title="Excluir Autor"
-          description={(author) => (
-            <Text>
-              Tem certeza que deseja excluir <strong>{author.name}</strong>?
-              Esta ação não pode ser desfeita.
-            </Text>
-          )}
-        />
-      )}
-
-      {selectedForView && (
+      {selected && (
         <AuthorDetailModal
-          author={selectedForView}
-          isOpen={!!selectedForView}
-          onClose={() => setSelectedForView(null)}
+          author={selected}
+          isOpen={!!selected}
+          onClose={() => setSelected(null)}
         />
       )}
     </section>
