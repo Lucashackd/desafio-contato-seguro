@@ -45,7 +45,7 @@ export default function AuthorDetailModal({
       title="Detalhes do autor"
       content={
         <>
-          <div className="detail-model__info">
+          <div className="detail-modal__info">
             <div className="detail-modal__field">
               <UserOutlined className="detail-modal__icon" />
               <Text className="detail-modal__text">

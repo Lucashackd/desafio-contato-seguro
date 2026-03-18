@@ -2,49 +2,49 @@
   margin: 0 auto;
 }
 
-.layout {
+.app-layout__layout {
   min-height: 100vh;
+
+  .app-layout__content {
+    background-color: #f2f0ef;
+    min-height: 100%;
+  }
+
+  .app-layout__sider {
+    padding: 16px;
+  }
 }
 
-.layout .content {
-  background-color: #f2f0ef;
-  min-height: 100%;
-}
-
-.layout .sider {
-  padding: 16px;
-}
-
-.mobile-header {
+.mobile-header__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
   padding: 0 12px;
+
+  button {
+    background-color: #e6f4ff;
+    width: 32px;
+    height: 32px;
+  }
 }
 
-.mobile-header button {
-  background-color: #e6f4ff;
-  width: 32px;
-  height: 32px;
-}
-
-.sidebar-content-title {
+.sidebar-content__title {
   justify-self: center;
+
+  .sidebar-content__not-mobile {
+    width: 100%;
+    margin-bottom: 24px;
+  }
 }
 
-.sidebar-content-title .not-mobile {
-  width: 100%;
-  margin-bottom: 24px;
-}
-
-.sidebar-menu {
+.sidebar-content__menu {
   border: none !important;
   user-select: none;
-}
 
-.sidebar-menu .ant-menu-item-selected {
-  color: #1b263b;
+  .ant-menu-item-selected {
+    color: #1b263b;
+  }
 }
 
 .title {
