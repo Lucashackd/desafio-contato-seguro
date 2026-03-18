@@ -19,9 +19,9 @@ export default function SidebarContent({ onMenuClick }: SidebarContentProps) {
 
   return (
     <>
-      <div className="sidebar-content-title title">
+      <div className="sidebar-content__title title">
         {!isMobile && (
-          <div className="not-mobile title">
+          <div className="sidebar-content__not-mobile title">
             <ReadFilled />
             {isDesktop && <span>Biblioteca</span>}
           </div>
@@ -30,7 +30,7 @@ export default function SidebarContent({ onMenuClick }: SidebarContentProps) {
 
       <nav aria-label="Menu principal">
         <Menu
-          className="sidebar-menu"
+          className="sidebar-content__menu"
           items={menuItems}
           mode="vertical"
           onClick={({ key }) => {

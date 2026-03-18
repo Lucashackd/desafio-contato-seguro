@@ -8,7 +8,7 @@ type MobileHeaderProps = {
 
 export default function MobileHeader({ open }: MobileHeaderProps) {
   return (
-    <Header className="mobile-header">
+    <Header className="mobile-header__container">
       <Button
         icon={<MenuOutlined style={{ fontSize: 18 }} />}
         onClick={open}

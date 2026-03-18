@@ -1,3 +1,9 @@
+import {
+  BookOutlined,
+  CalendarOutlined,
+  ReadOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import Text from "antd/es/typography/Text";
 import getAuthorName from "../helpers/getAuthorName";
 import { getFormattedDateTime } from "../helpers/getFormattedDate";
@@ -26,12 +32,14 @@ export default function BookDetailModal({
       content={
         <>
           <div className="detail-modal__field">
+            <BookOutlined className="detail-modal__icon" />
             <Text className="detail-modal__text">
               <strong>Título:</strong> {book?.title}
             </Text>
           </div>
 
           <div className="detail-modal__field">
+            <UserOutlined className="detail-modal__icon" />
             <Text className="detail-modal__text">
               <strong>Autor:</strong> {getAuthorName(authors, book.author_id)}
             </Text>
@@ -39,6 +47,7 @@ export default function BookDetailModal({
 
           {book?.pages && (
             <div className="detail-modal__field">
+              <ReadOutlined className="detail-modal__icon" />
               <Text className="detail-modal__text">
                 <strong>Páginas:</strong> {book?.pages}
               </Text>
@@ -46,6 +55,7 @@ export default function BookDetailModal({
           )}
 
           <div className="detail-modal__field">
+            <CalendarOutlined className="detail-modal__icon" />
             <Text className="detail-modal__text">
               <strong>Adcionado em:</strong>{" "}
               {getFormattedDateTime(book.createdAt)}

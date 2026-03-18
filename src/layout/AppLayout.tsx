@@ -13,10 +13,10 @@ export default function AppLayout() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <Layout className="layout">
+    <Layout className="app-layout__layout">
       {!isMobile && (
         <Sider
-          className="sider"
+          className="app-layout__sider"
           collapsed={isTablet}
           collapsedWidth={64}
           theme="light"
@@ -33,14 +33,14 @@ export default function AppLayout() {
         />
       )}
 
-      <Layout className="layout">
+      <Layout className="app-layout__layout">
         {isMobile && (
           <header>
             <MobileHeader open={() => setIsDrawerOpen(true)} />
           </header>
         )}
 
-        <Content className="content">
+        <Content className="app-layout__content">
           <Outlet />
         </Content>
       </Layout>
